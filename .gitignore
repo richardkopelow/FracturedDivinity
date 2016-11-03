@@ -29,3 +29,5 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Assets/SpaceNavigator/
+Assets/SpaceNavigator.meta
+Assets/Plugins/3DConnexionWrapperU4.bundle.meta
