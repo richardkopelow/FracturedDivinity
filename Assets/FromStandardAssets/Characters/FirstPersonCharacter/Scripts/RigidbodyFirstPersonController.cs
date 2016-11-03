@@ -142,20 +142,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
             GroundCheck();
             Vector2 input = GetInput();
 
-            if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
+            if ((advancedSettings.airControl || m_IsGrounded))
             {
                 // always move along the camera forward as it is the direction that it being aimed at
                 Vector3 desiredMove = cam.transform.forward*input.y + cam.transform.right*input.x;
+                Vector3 flatVelocity = m_RigidBody.velocity;
+                flatVelocity.y = 0;
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
+                flatVelocity = Vector3.ProjectOnPlane(flatVelocity, m_GroundContactNormal);
 
                 desiredMove.x = desiredMove.x*movementSettings.CurrentTargetSpeed;
                 desiredMove.z = desiredMove.z*movementSettings.CurrentTargetSpeed;
                 desiredMove.y = desiredMove.y*movementSettings.CurrentTargetSpeed;
-                if (m_RigidBody.velocity.sqrMagnitude <
-                    (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
-                {
+                desiredMove = desiredMove - flatVelocity;
+                
+                //if (m_RigidBody.velocity.sqrMagnitude <
+                //    (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
+                //{
                     m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
-                }
+                //}
             }
 
             if (m_IsGrounded)
@@ -258,6 +263,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             if (!m_PreviouslyGrounded && m_IsGrounded && m_Jumping)
             {
+                Listener.MakeSound(m_RigidBody.position, 4);
                 m_Jumping = false;
             }
         }

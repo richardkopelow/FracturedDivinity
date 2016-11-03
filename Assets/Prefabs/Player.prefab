@@ -40,6 +40,7 @@ GameObject:
   - 136: {fileID: 136000013817568660}
   - 114: {fileID: 114000011002540840}
   - 114: {fileID: 114000012637285884}
+  - 114: {fileID: 114000010793808990}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -57,7 +58,6 @@ GameObject:
   - 4: {fileID: 4000010927846088}
   - 20: {fileID: 20000013636401908}
   - 81: {fileID: 81000011374426934}
-  - 114: {fileID: 114000013654665648}
   - 124: {fileID: 124000011758066210}
   m_Layer: 0
   m_Name: MainCamera
@@ -199,6 +199,21 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013770995762}
   m_Enabled: 1
+--- !u!114 &114000010793808990
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012232397504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87da57d879e27454ca9738d33d3dd294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 2800000, guid: 3a4c798d157a071468b2df02a80102ef, type: 3}
+  Color: {r: 0, g: 0, b: 0, a: 0}
+  PassiveStress: 0
+  ActiveStress: 0
 --- !u!114 &114000011002540840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -269,61 +284,13 @@ MonoBehaviour:
   MaxHealth: 20
   Health: 0
   cam: {fileID: 20000013636401908}
+  Gun: {fileID: 4000010264878858}
+  BulletPrefab: {fileID: 4000010238237346, guid: 9e99475542737a04f8a552a04d5520db,
+    type: 2}
   Tooltip: {fileID: 0}
   Reach: 2
---- !u!114 &114000013654665648
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013770995762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83c81407209f85e4c87c0cda8b32868e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Camera: {fileID: 20000013636401908}
-  motionBob:
-    HorizontalBobRange: 0.1
-    VerticalBobRange: 0.05
-    Bobcurve:
-      serializedVersion: 2
-      m_Curve:
-      - time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - time: 0.5
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - time: 1.5
-        value: -1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - time: 2
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    VerticaltoHorizontalRatio: 2
-  jumpAndLandingBob:
-    BobDuration: 0.15
-    BobAmount: 0.2
-  rigidbodyFirstPersonController: {fileID: 114000011002540840}
-  StrideInterval: 4
-  RunningStrideLengthen: 0.722
+  BulletSpeed: 30
+  Stress: 0
 --- !u!124 &124000011758066210
 Behaviour:
   m_ObjectHideFlags: 1
