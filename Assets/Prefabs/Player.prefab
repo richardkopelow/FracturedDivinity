@@ -58,6 +58,8 @@ GameObject:
   - 20: {fileID: 20000013636401908}
   - 81: {fileID: 81000011374426934}
   - 124: {fileID: 124000011758066210}
+  - 114: {fileID: 114000011192069072}
+  - 114: {fileID: 114000011171743824}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -254,6 +256,37 @@ MonoBehaviour:
     slowDownRate: 20
     airControl: 0
     shellOffset: 0
+  Noisy: 1
+--- !u!114 &114000011171743824
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013770995762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f19108706fdce9469603d07980eb8ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 3
+  intensity: 1
+  texture: {fileID: 2800000, guid: 822715e39cffe9e44a6bab22b320e363, type: 3}
+  overlayShader: {fileID: 4800000, guid: 8c81db0e527d24acc9bcec04e87781bd, type: 3}
+--- !u!114 &114000011192069072
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013770995762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f19108706fdce9469603d07980eb8ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 3
+  intensity: 0
+  texture: {fileID: 2800000, guid: 7f33b6a8b837cdd4c963a8a74ca32df6, type: 3}
+  overlayShader: {fileID: 4800000, guid: 8c81db0e527d24acc9bcec04e87781bd, type: 3}
 --- !u!114 &114000012637285884
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -267,7 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 20
   Health: 0
-  cam: {fileID: 20000013636401908}
+  Cam: {fileID: 20000013636401908}
   Gun: {fileID: 4000010264878858}
   BulletPrefab: {fileID: 4000010238237346, guid: 9e99475542737a04f8a552a04d5520db,
     type: 2}
@@ -278,7 +311,9 @@ MonoBehaviour:
   Reach: 2
   BulletSpeed: 30
   FireTimeDelay: 0.2
-  FragmentEnums: 00000000
+  NotCloaked: 1
+  FragmentEnums: 0000000001000000
+  StressRecoveryRate: 0.2
   Stress: 0
 --- !u!124 &124000011758066210
 Behaviour:

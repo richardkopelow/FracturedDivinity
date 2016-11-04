@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityStandardAssets.ImageEffects;
 
 public class Player : Killable
 {
-    public Camera cam;
+    public Camera Cam;
     Transform camTrans;
     public Transform Gun;
     public Transform BulletPrefab;
@@ -19,6 +20,9 @@ public class Player : Killable
 
     public float StressRecoveryRate = 0.2f;
     public float Stress = 0;
+
+    ScreenOverlay stressOverlay;
+    ScreenOverlay healthOverlay;
 
     private List<Fragment> fragments;
     private float lastFireTime = 0;
@@ -46,6 +50,13 @@ public class Player : Killable
                     break;
                 case FragmentTypeEnum.Perseption:
                     break;
+                case FragmentTypeEnum.Heal:
+                    {
+                        Heal addFrag = gameObject.AddComponent<Heal>();
+                        addFrag.enabled = false;
+                        fragments.Add(addFrag);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -54,7 +65,10 @@ public class Player : Killable
     protected override void Start()
     {
         GlobalState.Instance.Player = GetComponent<Transform>();
-        camTrans = cam.GetComponent<Transform>();
+        camTrans = Cam.GetComponent<Transform>();
+        ScreenOverlay[] overlays = camTrans.GetComponents<ScreenOverlay>();
+        stressOverlay = overlays[0];
+        healthOverlay = overlays[1];
         Time.fixedDeltaTime = 0.017f;
         for (int i = 0; i < fragments.Count; i++)
         {
@@ -142,8 +156,13 @@ public class Player : Killable
                 Stress = 0;
             }
         }
+        if (Health > MaxHealth)
+        {
+            Health = MaxHealth;
+        }
+        stressOverlay.intensity = Stress / 100;
+        healthOverlay.intensity = (MaxHealth - Health) / (float)MaxHealth;
     }
-
     protected override void Die()
     {
 

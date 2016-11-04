@@ -100,7 +100,7 @@ Prefab:
     - target: {fileID: 114000012637285884, guid: c0039111384734f48917c3fd2c4542c1,
         type: 2}
       propertyPath: FragmentEnums.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000010114631356, guid: c0039111384734f48917c3fd2c4542c1, type: 2}
       propertyPath: m_LocalPosition.x
@@ -146,8 +146,8 @@ Prefab:
       objectReference: {fileID: 852004307}
     - target: {fileID: 114000012637285884, guid: c0039111384734f48917c3fd2c4542c1,
         type: 2}
-      propertyPath: FragmentEnums.Array.data[1]
-      value: 1
+      propertyPath: FragmentEnums.Array.data[2]
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c0039111384734f48917c3fd2c4542c1, type: 2}

@@ -6,7 +6,8 @@ public enum FragmentTypeEnum
 {
     Speed,
     Presence,
-    Perseption
+    Perseption,
+    Heal
 }
 public class Fragment : MonoBehaviour
 {

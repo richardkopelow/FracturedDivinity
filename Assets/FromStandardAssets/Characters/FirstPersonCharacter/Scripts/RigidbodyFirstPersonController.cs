@@ -163,7 +163,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 //{
                 m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
                 //}
-                if (Noisy)
+                if (Noisy && (Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon))
                 {
                     Listener.MakeSound(m_RigidBody.position, 5);
                 }

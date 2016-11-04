@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Killable : MonoBehaviour
 {
-    public int MaxHealth;
-    public int Health;
+    public float MaxHealth;
+    public float Health;
     protected virtual void Start()
     {
         Health = MaxHealth;
