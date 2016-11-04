@@ -42,7 +42,7 @@ public class Grunt : Killable
         int angle;
         if (canSeePlayer(out angle))
         {
-            trans.Rotate(0, Mathf.Lerp(0, angle, Time.deltaTime*2), 0);
+            trans.Rotate(0, Mathf.Lerp(0, angle, Time.deltaTime * 3), 0);
             if ((GlobalState.Instance.Player.position - trans.position).magnitude > 3)
             {
                 navAgent.SetDestination(GlobalState.Instance.Player.position);
@@ -68,6 +68,10 @@ public class Grunt : Killable
             {
                 navAgent.destination = soundLocation;
             }
+            if ((trans.position - soundLocation).magnitude < 3)
+            {
+                soundIntensity = 0;
+            }
         }
     }
 
@@ -80,7 +84,7 @@ public class Grunt : Killable
             if (Physics.Raycast(trans.position, direction, out hit))
             {
                 Player player = hit.collider.GetComponent<Player>();
-                if (player != null)
+                if (player != null && player.NotCloaked)
                 {
                     return true;
                 }

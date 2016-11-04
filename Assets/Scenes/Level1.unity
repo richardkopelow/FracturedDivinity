@@ -100,7 +100,7 @@ Prefab:
     - target: {fileID: 114000012637285884, guid: c0039111384734f48917c3fd2c4542c1,
         type: 2}
       propertyPath: FragmentEnums.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4000010114631356, guid: c0039111384734f48917c3fd2c4542c1, type: 2}
       propertyPath: m_LocalPosition.x
@@ -136,11 +136,20 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114000012637285884, guid: c0039111384734f48917c3fd2c4542c1,
         type: 2}
+      propertyPath: HUD
+      value: 
+      objectReference: {fileID: 1593883271}
+    - target: {fileID: 114000012637285884, guid: c0039111384734f48917c3fd2c4542c1,
+        type: 2}
       propertyPath: Tooltip
       value: 
       objectReference: {fileID: 852004307}
-    m_RemovedComponents:
-    - {fileID: 114000010793808990, guid: c0039111384734f48917c3fd2c4542c1, type: 2}
+    - target: {fileID: 114000012637285884, guid: c0039111384734f48917c3fd2c4542c1,
+        type: 2}
+      propertyPath: FragmentEnums.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c0039111384734f48917c3fd2c4542c1, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &426361040 stripped

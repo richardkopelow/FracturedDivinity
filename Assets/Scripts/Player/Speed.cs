@@ -20,31 +20,34 @@ class Speed : Fragment
         strafeSpeed = controller.movementSettings.StrafeSpeed;
         backwardsSpeed = controller.movementSettings.BackwardSpeed;
         originalFireTimeDelay = player.FireTimeDelay;
+
+        PassiveStress = 0.15f;
+        ActiveStress = 0.2f;
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             Active = !Active;
-            if (Active)
-            {
-                Time.timeScale=0.1f;
-                Time.fixedDeltaTime = GlobalState.StandardFixedDeltaTime * Time.timeScale;
-                controller.movementSettings.ForwardSpeed = forwardSpeed * 2;
-                controller.movementSettings.StrafeSpeed = strafeSpeed * 2;
-                controller.movementSettings.BackwardSpeed = backwardsSpeed * 2;
-                player.FireTimeDelay = originalFireTimeDelay / 2;
-            }
-            else
-            {
-                Time.timeScale = 1;
-                Time.fixedDeltaTime = GlobalState.StandardFixedDeltaTime;
-                controller.movementSettings.ForwardSpeed = forwardSpeed;
-                controller.movementSettings.StrafeSpeed = strafeSpeed;
-                controller.movementSettings.BackwardSpeed = backwardsSpeed;
-                player.FireTimeDelay = originalFireTimeDelay;
-            }
         }
+    }
+    protected override void activate()
+    {
+        Time.timeScale = 0.1f;
+        Time.fixedDeltaTime = GlobalState.StandardFixedDeltaTime * Time.timeScale;
+        controller.movementSettings.ForwardSpeed = forwardSpeed * 2;
+        controller.movementSettings.StrafeSpeed = strafeSpeed * 2;
+        controller.movementSettings.BackwardSpeed = backwardsSpeed * 2;
+        player.FireTimeDelay = originalFireTimeDelay / 2;
+    }
+    protected override void deactivate()
+    {
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = GlobalState.StandardFixedDeltaTime;
+        controller.movementSettings.ForwardSpeed = forwardSpeed;
+        controller.movementSettings.StrafeSpeed = strafeSpeed;
+        controller.movementSettings.BackwardSpeed = backwardsSpeed;
+        player.FireTimeDelay = originalFireTimeDelay;
     }
 }

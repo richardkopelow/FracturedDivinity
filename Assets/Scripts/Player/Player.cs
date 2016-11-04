@@ -8,41 +8,60 @@ public class Player : Killable
     Transform camTrans;
     public Transform Gun;
     public Transform BulletPrefab;
+    public RectTransform HUD;
+    public RectTransform FragmentIcon;
     public Text Tooltip;
     public float Reach = 2;
     public float BulletSpeed = 20;
     public float FireTimeDelay = 0.2f;
-    public FragmentEnum[] FragmentEnums;
+    public bool NotCloaked = true;
+    public FragmentTypeEnum[] FragmentEnums;
 
-    public int Stress = 0;
+    public float StressRecoveryRate = 0.2f;
+    public float Stress = 0;
 
-    private List<Fragment> fragnents;
-    private float lastFireTime=0;
+    private List<Fragment> fragments;
+    private float lastFireTime = 0;
 
+    void Awake()
+    {
+        fragments = new List<global::Fragment>();
+        foreach (FragmentTypeEnum frag in FragmentEnums)
+        {
+            switch (frag)
+            {
+                case FragmentTypeEnum.Speed:
+                    {
+                        Speed addFrag = gameObject.AddComponent<Speed>();
+                        addFrag.enabled = false;
+                        fragments.Add(addFrag);
+                    }
+                    break;
+                case FragmentTypeEnum.Presence:
+                    {
+                        Presence addFrag = gameObject.AddComponent<Presence>();
+                        addFrag.enabled = false;
+                        fragments.Add(addFrag);
+                    }
+                    break;
+                case FragmentTypeEnum.Perseption:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     protected override void Start()
     {
         GlobalState.Instance.Player = GetComponent<Transform>();
         camTrans = cam.GetComponent<Transform>();
         Time.fixedDeltaTime = 0.017f;
-        fragnents = new List<global::Fragment>();
-        foreach (FragmentEnum frag in FragmentEnums)
+        for (int i = 0; i < fragments.Count; i++)
         {
-            switch (frag)
-            {
-                case FragmentEnum.Speed:
-                    {
-                        Speed addFrag = gameObject.AddComponent<Speed>();
-                        addFrag.enabled = false;
-                        fragnents.Add(addFrag);
-                    }
-                    break;
-                case FragmentEnum.Presence:
-                    break;
-                case FragmentEnum.Perseption:
-                    break;
-                default:
-                    break;
-            }
+            RectTransform icon = (RectTransform)Instantiate(FragmentIcon, HUD);
+            icon.GetComponent<Image>().sprite = fragments[i].Icon;
+            icon.FindChild("Text").GetComponent<Text>().text = (i + 1).ToString();
+            icon.anchoredPosition = new Vector3(36 * (i + 1) + 50 * i, 36, 0);
         }
         base.Start();
     }
@@ -70,9 +89,12 @@ public class Player : Killable
         {
             Tooltip.text = "";
         }
-        if (Input.GetMouseButtonDown(0)&&Time.time>lastFireTime+FireTimeDelay)
+        if (Input.GetMouseButtonDown(0) && Time.time > lastFireTime + FireTimeDelay)
         {
-            Listener.MakeSound(transform.position,50);
+            if (NotCloaked)
+            {
+                Listener.MakeSound(transform.position, 50);
+            }
             RaycastHit fireHit;
             if (Physics.Raycast(camTrans.position, camTrans.forward, out fireHit))
             {
@@ -91,17 +113,39 @@ public class Player : Killable
             }
             lastFireTime = Time.time;
         }
-        for (int i = 0; i < fragnents.Count; i++)
+        int activeCount = 0;
+        for (int i = 0; i < fragments.Count; i++)
         {
             if (Input.GetKeyDown((i + 1).ToString()))
             {
-                fragnents[i].Enabled = !fragnents[i].Enabled;
+                fragments[i].Enabled = !fragments[i].Enabled;
+            }
+            if (fragments[i].Enabled)
+            {
+                Stress += fragments[i].Stress;
+                activeCount++;
+            }
+        }
+        if (activeCount > 1)
+        {
+            Stress += (activeCount - 1) * 0.1f;
+        }
+        Stress -= StressRecoveryRate;
+        if (Stress > 100)
+        {
+            Die();
+        }
+        else
+        {
+            if (Stress < 0)
+            {
+                Stress = 0;
             }
         }
     }
 
     protected override void Die()
     {
-        
+
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum FragmentEnum
+public enum FragmentTypeEnum
 {
     Speed,
     Presence,
@@ -10,7 +10,7 @@ public enum FragmentEnum
 }
 public class Fragment : MonoBehaviour
 {
-    public Texture Icon;
+    public Sprite Icon;
     public Color Color;
     public float PassiveStress;
     public float ActiveStress;
@@ -40,7 +40,18 @@ public class Fragment : MonoBehaviour
     public bool Active
     {
         get { return _active; }
-        set { _active = value; }
+        set
+        {
+            _active = value;
+            if (_active)
+            {
+                activate();
+            }
+            else
+            {
+                deactivate();
+            }
+        }
     }
     public float Stress
     {
@@ -59,6 +70,14 @@ public class Fragment : MonoBehaviour
     }
     protected virtual void disable()
     {
+        Active = false;
+    }
+    protected virtual void activate()
+    {
 
+    }
+    protected virtual void deactivate()
+    {
+        
     }
 }

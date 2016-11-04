@@ -11,5 +11,6 @@ public class Bullet : MonoBehaviour
         {
             killable.TakeDamage(2);
         }
+        Listener.MakeSound(collision.contacts[0].point,20);
     }
 }
