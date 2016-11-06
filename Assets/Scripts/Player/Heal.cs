@@ -5,17 +5,26 @@ public class Heal : Fragment
 {
     Player player;
 
-    bool engaged = false;
+    bool _engaged = false;
+    bool engaged {
+        get { return _engaged; }
+        set
+        {
+            _engaged = value;
+            player.Unkillable = _engaged;
+        }
+    }
     float lastHealth;
 
-    void Start()
+    protected override void Start()
     {
         player = GetComponent<Player>();
         lastHealth = player.Health;
 
         PassiveStress = 0.15f;
+        base.Start();
     }
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.H))
@@ -33,7 +42,7 @@ public class Heal : Fragment
                 Active = true;
                 float healing = lastHealth - player.Health + 0.02f;
                 player.Health += healing;
-                ActiveStress = healing*7+0.065f;
+                ActiveStress = healing * 7 + 0.065f;
             }
             else
             {

@@ -10,7 +10,7 @@ public class Killable : MonoBehaviour
         Health = MaxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(float damage)
     {
         Health -= damage;
         if (Health<=0)

@@ -73,10 +73,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012232397504}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: 0, y: 0.356, z: 1.949}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0, y: 0.827, z: 2.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children:
   - {fileID: 4000010927846088}
   m_Father: {fileID: 0}
@@ -227,7 +227,7 @@ MonoBehaviour:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: 0
+      - time: 45
         value: 1
         inSlope: 0
         outSlope: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-      m_RotationOrder: 4
+      m_RotationOrder: 0
     CurrentTargetSpeed: 8
   mouseLook:
     XSensitivity: 2
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blendMode: 3
-  intensity: 1
+  intensity: 0
   texture: {fileID: 2800000, guid: 822715e39cffe9e44a6bab22b320e363, type: 3}
   overlayShader: {fileID: 4800000, guid: 8c81db0e527d24acc9bcec04e87781bd, type: 3}
 --- !u!114 &114000011192069072
@@ -312,7 +312,8 @@ MonoBehaviour:
   BulletSpeed: 30
   FireTimeDelay: 0.2
   NotCloaked: 1
-  FragmentEnums: 0000000001000000
+  Unkillable: 0
+  FragmentEnums: 
   StressRecoveryRate: 0.2
   Stress: 0
 --- !u!124 &124000011758066210

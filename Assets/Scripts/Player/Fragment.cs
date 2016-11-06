@@ -11,6 +11,7 @@ public enum FragmentTypeEnum
 }
 public class Fragment : MonoBehaviour
 {
+    public string FragmentName;
     public Sprite Icon;
     public Color Color;
     public float PassiveStress;
@@ -22,19 +23,16 @@ public class Fragment : MonoBehaviour
         get { return _enabled; }
         set
         {
-            if (_enabled != value)
+            _enabled = value;
+            if (_enabled)
             {
-                _enabled = value;
-                if (_enabled)
-                {
-                    enable();
-                }
-                else
-                {
-                    disable();
-                }
-                enabled = _enabled;
+                enable();
             }
+            else
+            {
+                disable();
+            }
+            enabled = _enabled;
         }
     }
     private bool _active;
@@ -60,10 +58,20 @@ public class Fragment : MonoBehaviour
         {
             float passive = _enabled ? PassiveStress : 0;
             float active = _active ? ActiveStress : 0;
-            return passive + active;
+            return (passive + active)/Affinity;
         }
     }
+    public float Affinity { get; set; }
 
+    public Fragment() : base()
+    {
+        Affinity = 1;
+    }
+
+    protected virtual void Start()
+    {
+        Icon = Resources.Load<Sprite>("PowerIcons/" + FragmentName);
+    }
 
     protected virtual void enable()
     {

@@ -7,13 +7,14 @@ public class Presence : Fragment
     Player player;
     RigidbodyFirstPersonController controller;
 
-    void Start()
+    protected override void Start()
     {
         player = GetComponent<Player>();
         controller = GetComponent<RigidbodyFirstPersonController>();
 
         PassiveStress = 0.15f;
         ActiveStress = 0.1f;
+        base.Start();
     }
     
     void Update()

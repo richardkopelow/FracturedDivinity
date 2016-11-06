@@ -12,7 +12,7 @@ class Speed : Fragment
     float backwardsSpeed;
     float originalFireTimeDelay;
 
-    void Start()
+    protected override void Start()
     {
         controller = GetComponent<RigidbodyFirstPersonController>();
         player = GetComponent<Player>();
@@ -23,6 +23,7 @@ class Speed : Fragment
 
         PassiveStress = 0.15f;
         ActiveStress = 0.2f;
+        base.Start();
     }
 
     public void Update()

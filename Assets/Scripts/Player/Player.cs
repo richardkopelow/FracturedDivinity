@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityStandardAssets.ImageEffects;
@@ -16,6 +17,7 @@ public class Player : Killable
     public float BulletSpeed = 20;
     public float FireTimeDelay = 0.2f;
     public bool NotCloaked = true;
+    public bool Unkillable = false;
     public FragmentTypeEnum[] FragmentEnums;
 
     public float StressRecoveryRate = 0.2f;
@@ -25,41 +27,16 @@ public class Player : Killable
     ScreenOverlay healthOverlay;
 
     private List<Fragment> fragments;
+    private List<GameObject> fragmentIcons;
     private float lastFireTime = 0;
+    private float multiFragmentAffinity = 1;
 
     void Awake()
     {
-        fragments = new List<global::Fragment>();
+        fragments = new List<Fragment>();
         foreach (FragmentTypeEnum frag in FragmentEnums)
         {
-            switch (frag)
-            {
-                case FragmentTypeEnum.Speed:
-                    {
-                        Speed addFrag = gameObject.AddComponent<Speed>();
-                        addFrag.enabled = false;
-                        fragments.Add(addFrag);
-                    }
-                    break;
-                case FragmentTypeEnum.Presence:
-                    {
-                        Presence addFrag = gameObject.AddComponent<Presence>();
-                        addFrag.enabled = false;
-                        fragments.Add(addFrag);
-                    }
-                    break;
-                case FragmentTypeEnum.Perseption:
-                    break;
-                case FragmentTypeEnum.Heal:
-                    {
-                        Heal addFrag = gameObject.AddComponent<Heal>();
-                        addFrag.enabled = false;
-                        fragments.Add(addFrag);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            addFrag(frag);
         }
     }
     protected override void Start()
@@ -70,13 +47,8 @@ public class Player : Killable
         stressOverlay = overlays[0];
         healthOverlay = overlays[1];
         Time.fixedDeltaTime = 0.017f;
-        for (int i = 0; i < fragments.Count; i++)
-        {
-            RectTransform icon = (RectTransform)Instantiate(FragmentIcon, HUD);
-            icon.GetComponent<Image>().sprite = fragments[i].Icon;
-            icon.FindChild("Text").GetComponent<Text>().text = (i + 1).ToString();
-            icon.anchoredPosition = new Vector3(36 * (i + 1) + 50 * i, 36, 0);
-        }
+        fragmentIcons = new List<GameObject>();
+        StartCoroutine(buildFragmentIcons());
         base.Start();
     }
 
@@ -136,13 +108,17 @@ public class Player : Killable
             }
             if (fragments[i].Enabled)
             {
-                Stress += fragments[i].Stress;
+                float fragStress = fragments[i].Stress;
+                fragments[i].Affinity += fragStress / 100000;
+                Stress += fragStress;
                 activeCount++;
             }
         }
         if (activeCount > 1)
         {
-            Stress += (activeCount - 1) * 0.1f;
+            float multiFragmentStress = (activeCount - 1) * 0.1f;
+            multiFragmentAffinity = multiFragmentStress / 100000;
+            Stress += multiFragmentStress;
         }
         Stress -= StressRecoveryRate;
         if (Stress > 100)
@@ -162,6 +138,74 @@ public class Player : Killable
         }
         stressOverlay.intensity = Stress / 100;
         healthOverlay.intensity = (MaxHealth - Health) / (float)MaxHealth;
+    }
+
+    public void TakeOnFragment(FragmentTypeEnum fragmentType)
+    {
+        addFrag(fragmentType);
+        StartCoroutine(buildFragmentIcons());
+    }
+
+    private void addFrag(FragmentTypeEnum frag)
+    {
+        Fragment addFrag=null;
+        switch (frag)
+        {
+            case FragmentTypeEnum.Speed:
+                {
+                    addFrag = gameObject.AddComponent<Speed>();
+                    fragments.Add(addFrag);
+                }
+                break;
+            case FragmentTypeEnum.Presence:
+                {
+                    addFrag = gameObject.AddComponent<Presence>();
+                    fragments.Add(addFrag);
+                }
+                break;
+            case FragmentTypeEnum.Perseption:
+                break;
+            case FragmentTypeEnum.Heal:
+                {
+                    addFrag = gameObject.AddComponent<Heal>();
+                    fragments.Add(addFrag);
+                }
+                break;
+            default:
+                break;
+        }
+        addFrag.FragmentName = frag.ToString();
+    }
+
+    private IEnumerator buildFragmentIcons()
+    {
+        yield return null;
+        foreach (Fragment frag in fragments)
+        {
+            frag.Enabled = false;
+        }
+        foreach (GameObject icon in fragmentIcons)
+        {
+            Destroy(icon);
+        }
+        fragmentIcons = new List<GameObject>();
+        for (int i = 0; i < fragments.Count; i++)
+        {
+            RectTransform icon = (RectTransform)Instantiate(FragmentIcon, HUD);
+            icon.GetComponent<Image>().sprite = fragments[i].Icon;
+            icon.FindChild("Text").GetComponent<Text>().text = (i + 1).ToString();
+            icon.anchoredPosition = new Vector3(36 * (i + 1) + 50 * i, 36, 0);
+            fragmentIcons.Add(icon.gameObject);
+        }
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        Health -= damage;
+        if (Health <= 0 && !Unkillable)
+        {
+            Die();
+        }
     }
     protected override void Die()
     {
