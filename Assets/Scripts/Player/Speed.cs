@@ -22,7 +22,7 @@ class Speed : Fragment
         originalFireTimeDelay = player.FireTimeDelay;
 
         PassiveStress = 0.15f;
-        ActiveStress = 0.2f;
+        ActiveStress = 0.1f;
         base.Start();
     }
 

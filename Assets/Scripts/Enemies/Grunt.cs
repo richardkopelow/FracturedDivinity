@@ -60,6 +60,7 @@ public class Grunt : Killable
                 bullet.GetComponent<Rigidbody>().velocity = fireDirection * 30;
                 lastFireTime = Time.time;
             }
+            Listener.MakeSound(trans.position, 30);
             soundIntensity = 0;
         }
         else

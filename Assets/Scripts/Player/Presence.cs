@@ -13,7 +13,7 @@ public class Presence : Fragment
         controller = GetComponent<RigidbodyFirstPersonController>();
 
         PassiveStress = 0.15f;
-        ActiveStress = 0.1f;
+        ActiveStress = 0.15f;
         base.Start();
     }
     
