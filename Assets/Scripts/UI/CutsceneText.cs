@@ -27,6 +27,7 @@ public class CutsceneText : MonoBehaviour
             yield return Fade(0, FadeDelay);
             yield return new WaitForSeconds(HiddenDelay);
         }
+        PlayerPrefs.SetInt("SeenCutscene", 1);
         SceneManager.LoadScene("Temple");
     }
 

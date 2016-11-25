@@ -42,7 +42,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 112000009, guid: aae8a890e987fc545a51862787709735,
+  m_LightingDataAsset: {fileID: 112000001, guid: aae8a890e987fc545a51862787709735,
     type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
@@ -351,6 +351,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.1561236, y: 4.0188837e-14, z: 2.828038}
   m_Center: {x: -0.00000029802322, y: 0.22307, z: -3.1700153e-15}
+--- !u!114 &735774915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 735774913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da68bf0f03aed0141a5ac88b7c85900f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: HomeBase
 --- !u!1001 &1018182935
 Prefab:
   m_ObjectHideFlags: 0

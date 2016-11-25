@@ -255,7 +255,7 @@ MonoBehaviour:
     stickToGroundHelperDistance: 0.6
     slowDownRate: 20
     airControl: 0
-    shellOffset: 0
+    shellOffset: 0.12
   Noisy: 1
 --- !u!114 &114000011171743824
 MonoBehaviour:

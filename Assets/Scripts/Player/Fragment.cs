@@ -16,6 +16,7 @@ public class Fragment : MonoBehaviour
     public Color Color;
     public float PassiveStress;
     public float ActiveStress;
+    public FragmentTypeEnum FragmentType;
 
     private bool _enabled;
     public bool Enabled

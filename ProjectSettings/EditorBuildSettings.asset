@@ -10,4 +10,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntroCutscene.unity
   - enabled: 1
+    path: Assets/Scenes/HomeBase.unity
+  - enabled: 1
     path: Assets/Scenes/Temple.unity
+  - enabled: 1
+    path: Assets/Scenes/Office.unity

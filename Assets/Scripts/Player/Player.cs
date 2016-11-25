@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityStandardAssets.ImageEffects;
+using UnityEngine.SceneManagement;
+using System.Text;
+using System;
 
 public class Player : Killable
 {
@@ -22,6 +25,7 @@ public class Player : Killable
 
     public float StressRecoveryRate = 0.2f;
     public float Stress = 0;
+    public bool HasGun = true;
 
     ScreenOverlay stressOverlay;
     ScreenOverlay healthOverlay;
@@ -30,6 +34,7 @@ public class Player : Killable
     private List<GameObject> fragmentIcons;
     private float lastFireTime = 0;
     private float multiFragmentAffinity = 1;
+    private bool tooltipSet = true;
 
     void Awake()
     {
@@ -41,6 +46,7 @@ public class Player : Killable
     }
     protected override void Start()
     {
+        Deserialize();
         GlobalState.Instance.Player = GetComponent<Transform>();
         camTrans = Cam.GetComponent<Transform>();
         ScreenOverlay[] overlays = camTrans.GetComponents<ScreenOverlay>();
@@ -49,6 +55,10 @@ public class Player : Killable
         Time.fixedDeltaTime = 0.017f;
         fragmentIcons = new List<GameObject>();
         StartCoroutine(buildFragmentIcons());
+        if (!HasGun)
+        {
+            Destroy(Gun.gameObject);
+        }
         base.Start();
     }
 
@@ -60,6 +70,7 @@ public class Player : Killable
             Interactable[] interacts = hit.collider.GetComponentsInParent<Interactable>();
             if (interacts.Length > 0)
             {
+                tooltipSet = true;
                 Tooltip.text = "Press \"E\" to " + interacts[0].Action;
                 if (Input.GetKeyDown(KeyCode.E))
                 {
@@ -68,13 +79,23 @@ public class Player : Killable
             }
             else
             {
-                Tooltip.text = "";
+                if (tooltipSet)
+                {
+                    tooltipSet = false;
+                    Tooltip.text = "";
+                }
             }
         }
         else
         {
-            Tooltip.text = "";
+            if (tooltipSet)
+            {
+                tooltipSet = false;
+                Tooltip.text = "";
+            }
         }
+        if(HasGun)
+        {
         if (Input.GetMouseButtonDown(0) && Time.time > lastFireTime + FireTimeDelay)
         {
             if (NotCloaked)
@@ -99,6 +120,7 @@ public class Player : Killable
             }
             lastFireTime = Time.time;
         }
+    }
         int activeCount = 0;
         for (int i = 0; i < fragments.Count; i++)
         {
@@ -146,35 +168,37 @@ public class Player : Killable
         StartCoroutine(buildFragmentIcons());
     }
 
-    private void addFrag(FragmentTypeEnum frag)
+    private Fragment addFrag(FragmentTypeEnum frag)
     {
-        Fragment addFrag=null;
+        Fragment fragScript = null;
         switch (frag)
         {
             case FragmentTypeEnum.Speed:
                 {
-                    addFrag = gameObject.AddComponent<Speed>();
-                    fragments.Add(addFrag);
+                    fragScript = gameObject.AddComponent<Speed>();
+                    fragments.Add(fragScript);
                 }
                 break;
             case FragmentTypeEnum.Presence:
                 {
-                    addFrag = gameObject.AddComponent<Presence>();
-                    fragments.Add(addFrag);
+                    fragScript = gameObject.AddComponent<Presence>();
+                    fragments.Add(fragScript);
                 }
                 break;
             case FragmentTypeEnum.Perseption:
                 break;
             case FragmentTypeEnum.Heal:
                 {
-                    addFrag = gameObject.AddComponent<Heal>();
-                    fragments.Add(addFrag);
+                    fragScript = gameObject.AddComponent<Heal>();
+                    fragments.Add(fragScript);
                 }
                 break;
             default:
                 break;
         }
-        addFrag.FragmentName = frag.ToString();
+        fragScript.FragmentType = frag;
+        fragScript.FragmentName = frag.ToString();
+        return fragScript;
     }
 
     private IEnumerator buildFragmentIcons()
@@ -209,6 +233,51 @@ public class Player : Killable
     }
     protected override void Die()
     {
+        Serialize();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
+    public void OnDestroy()
+    {
+        Serialize();
+    }
+
+    private void Serialize()
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (Fragment frag in fragments)
+        {
+            sb.Append(frag.FragmentType);
+            sb.Append(",");
+            sb.Append(frag.Affinity);
+            sb.Append(",");
+        }
+        PlayerPrefs.SetString("frags", sb.ToString());
+        PlayerPrefs.SetFloat("multiFragAffinity", multiFragmentAffinity);
+    }
+    private void Deserialize()
+    {
+        string[] fragData = PlayerPrefs.GetString("frags").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < fragData.Length; i += 2)
+        {
+            addFrag((FragmentTypeEnum)Enum.Parse(typeof(FragmentTypeEnum), fragData[i])).Affinity = float.Parse(fragData[i + 1]);
+        }
+        multiFragmentAffinity = PlayerPrefs.GetFloat("multiFragAffinity");
+    }
+}
+
+public class FragmentSerializationData
+{
+    public FragmentTypeEnum FragmentType { get; set; }
+    public float Affinity { get; set; }
+
+    public FragmentSerializationData()
+    {
+    }
+
+    public FragmentSerializationData(FragmentTypeEnum fragmentType, float affinity)
+    {
+        FragmentType = fragmentType;
+        Affinity = affinity;
     }
 }
