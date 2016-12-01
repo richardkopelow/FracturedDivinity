@@ -8,7 +8,7 @@ public class Grunt : Killable
     public float FireDelay = 0.5f;
 
     Transform trans;
-    NavMeshAgent navAgent;
+    UnityEngine.AI.NavMeshAgent navAgent;
     float lastFireTime;
 
     #region SoundStuff
@@ -20,7 +20,7 @@ public class Grunt : Killable
     protected override void Start()
     {
         trans = GetComponent<Transform>();
-        navAgent = GetComponent<NavMeshAgent>();
+        navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         GetComponent<Listener>().OnHeardSound += Grunt_OnHeardSound;
         base.Start();
     }
