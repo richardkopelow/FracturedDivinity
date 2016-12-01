@@ -10,7 +10,8 @@ class GlobalState
 
     public static GlobalState Instance
     {
-        get {
+        get
+        {
             if (_instance == null)
             {
                 _instance = new GlobalState();
@@ -20,6 +21,18 @@ class GlobalState
     }
 
     public Transform Player;
+
+    public bool DidOffice
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("DidOffice") == 1;
+        }
+        set
+        {
+            PlayerPrefs.SetInt("DidOffice", value ? 1 : 0);
+        }
+    }
 
     private GlobalState()
     {

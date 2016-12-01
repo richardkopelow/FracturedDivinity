@@ -21,7 +21,20 @@ public class Player : Killable
     public float FireTimeDelay = 0.2f;
     public bool NotCloaked = true;
     public bool Unkillable = false;
-    public FragmentTypeEnum[] FragmentEnums;
+    [SerializeField]
+    FragmentTypeEnum[] FragmentEnums;
+    public List<FragmentTypeEnum> FragmentTypeEnums
+    {
+        get
+        {
+            List<FragmentTypeEnum> fragEnums = new List<FragmentTypeEnum>(fragments.Count);
+            foreach (Fragment frag in fragments)
+            {
+                fragEnums.Add(frag.FragmentType);
+            }
+            return fragEnums;
+        }
+    }
 
     public float StressRecoveryRate = 0.2f;
     public float Stress = 0;
@@ -94,33 +107,33 @@ public class Player : Killable
                 Tooltip.text = "";
             }
         }
-        if(HasGun)
+        if (HasGun)
         {
-        if (Input.GetMouseButtonDown(0) && Time.time > lastFireTime + FireTimeDelay)
-        {
-            if (NotCloaked)
+            if (Input.GetMouseButtonDown(0) && Time.time > lastFireTime + FireTimeDelay)
             {
-                Listener.MakeSound(transform.position, 50);
+                if (NotCloaked)
+                {
+                    Listener.MakeSound(transform.position, 50);
+                }
+                RaycastHit fireHit;
+                if (Physics.Raycast(camTrans.position, camTrans.forward, out fireHit))
+                {
+                    Transform bullet = Instantiate(BulletPrefab);
+                    bullet.position = Gun.position - Gun.up * 0.2f;
+                    bullet.LookAt(fireHit.point);
+                    bullet.Rotate(-90, 0, 0);
+                    bullet.GetComponent<Rigidbody>().velocity = camTrans.forward * BulletSpeed;
+                }
+                else
+                {
+                    Transform bullet = Instantiate(BulletPrefab);
+                    bullet.position = Gun.position - Gun.up * 0.2f;
+                    bullet.rotation = Gun.rotation;
+                    bullet.GetComponent<Rigidbody>().velocity = camTrans.forward * BulletSpeed;
+                }
+                lastFireTime = Time.time;
             }
-            RaycastHit fireHit;
-            if (Physics.Raycast(camTrans.position, camTrans.forward, out fireHit))
-            {
-                Transform bullet = Instantiate(BulletPrefab);
-                bullet.position = Gun.position - Gun.up * 0.2f;
-                bullet.LookAt(fireHit.point);
-                bullet.Rotate(-90, 0, 0);
-                bullet.GetComponent<Rigidbody>().velocity = camTrans.forward * BulletSpeed;
-            }
-            else
-            {
-                Transform bullet = Instantiate(BulletPrefab);
-                bullet.position = Gun.position - Gun.up * 0.2f;
-                bullet.rotation = Gun.rotation;
-                bullet.GetComponent<Rigidbody>().velocity = camTrans.forward * BulletSpeed;
-            }
-            lastFireTime = Time.time;
         }
-    }
         int activeCount = 0;
         for (int i = 0; i < fragments.Count; i++)
         {
